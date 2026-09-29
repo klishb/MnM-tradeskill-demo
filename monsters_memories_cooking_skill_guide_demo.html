@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M&M Cooking Tradeskill - Trivial Level Progression Guide</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & MedievalSharp for classic fantasy RPG feel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            fantasy: ['Cinzel', 'serif'],
+          },
+          colors: {
+            gold: {
+              300: '#fef08a',
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+              700: '#a16207',
+            },
+            parchment: {
+              100: '#fbf7ee',
+              200: '#f3e8d2',
+              300: '#e7d3ad',
+              800: '#3a3122',
+              900: '#261f14',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar for fantasy aesthetic */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans bg-slate-950 text-slate-200 antialiased selection:bg-amber-600 selection:text-white">
+
+  <!-- Top Banner / Header -->
+  <header class="bg-gradient-to-r from-slate-900 via-amber-950/40 to-slate-900 border-b border-amber-900/40 sticky top-0 z-30 shadow-lg backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-600 to-amber-900 flex items-center justify-center shadow-md border border-amber-500/30">
+          <i class="fa-solid font-bold fa-utensils text-amber-200 text-lg"></i>
+        </div>
+        <div>
+          <h1 class="font-fantasy font-bold text-xl sm:text-2xl text-amber-400 tracking-wide flex items-center gap-2">
+            Monsters &amp; Memories
+            <span class="text-xs font-sans uppercase tracking-widest text-amber-300/60 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800/50">Wiki UX Redesign</span>
+          </h1>
+          <p class="text-xs text-slate-400">Cooking Tradeskill Progression Guide</p>
+        </div>
+      </div>
+
+      <!-- Quick Feedback Pitch Toggle & Skill Tracker Widget -->
+      <div class="flex items-center gap-3">
+        <button id="togglePitchBtn" onclick="togglePitch()" class="text-xs bg-amber-900/30 hover:bg-amber-900/60 text-amber-300 border border-amber-700/50 px-3 py-1.5 rounded-md transition flex items-center gap-1.5 font-medium">
+          <i class="fa-solid fa-lightbulb text-amber-400"></i>
+          <span>Wiki Feedback Proposal</span>
+          <i id="pitchChevron" class="fa-solid fa-chevron-down text-xs transition-transform duration-200"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Collapsible Feedback Pitch Banner for Wiki Owners -->
+  <div id="pitchPanel" class="bg-slate-900 border-b border-amber-800/40 px-4 py-4 sm:px-8 bg-gradient-to-b from-amber-950/20 to-slate-900">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex items-start space-x-3">
+          <i class="fa-solid fa-circle-info text-amber-400 text-xl mt-0.5 shrink-0"></i>
+          <div class="space-y-2 text-sm text-slate-300">
+            <h3 class="font-fantasy text-amber-300 text-base font-bold">Why Trivial Level Sorting Matters for Crafters</h3>
+            <p>
+              When a player visits a wiki tradeskill page, 90% of the time their primary question is: 
+              <strong class="text-amber-200">"My cooking skill is 45 — what should I craft next to gain skill points efficiently?"</strong>
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 text-xs">
+              <div class="p-2.5 rounded bg-red-950/20 border border-red-900/30 text-slate-300">
+                <span class="font-semibold text-red-400 flex items-center gap-1 mb-1">
+                  <i class="fa-solid fa-xmark"></i> Current Wiki Design (Category First)
+                </span>
+                Groups recipes into Meat, Fish, Soups, etc. Forces players to open every sub-category, manually scan trivial levels, write them down on paper, and manually synthesize a leveling roadmap.
+              </div>
+              <div class="p-2.5 rounded bg-emerald-950/20 border border-emerald-900/30 text-slate-300">
+                <span class="font-semibold text-emerald-400 flex items-center gap-1 mb-1">
+                  <i class="fa-solid fa-check"></i> Proposed Redesign (Trivial Level First + Filters)
+                </span>
+                Defaults to a single unified progression sorted by Trivial Level. Categories and ingredient sources remain fully accessible via instantaneous filters without breaking the leveling sequence.
+              </div>
+            </div>
+          </div>
+        </div>
+        <button onclick="togglePitch()" class="text-slate-400 hover:text-amber-300 p-1">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Application Body -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Top Interactive Control Panel (Skill Level Input & View Modes) -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 sm:p-5 shadow-xl backdrop-blur-sm space-y-4">
+      
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        
+        <!-- Interactive Player Skill Level Input -->
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="flex items-center space-x-2 bg-slate-950 border border-amber-900/40 px-3.5 py-2 rounded-lg shadow-inner">
+            <label for="userSkillInput" class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-award text-amber-500"></i>
+              Your Cooking Skill:
+            </label>
+            <input 
+              type="number" 
+              id="userSkillInput" 
+              value="35" 
+              min="0" 
+              max="300"
+              oninput="updateSkillFilter()"
+              class="w-16 bg-slate-900 border border-slate-700 text-amber-300 font-mono font-bold text-base text-center rounded px-1 py-0.5 focus:outline-none focus:border-amber-500"
+            />
+          </div>
+
+          <!-- Quick Skill Buttons -->
+          <div class="flex items-center gap-1 text-xs text-slate-400">
+            <span class="hidden sm:inline text-slate-500">Quick set:</span>
+            <button onclick="setSkill(0)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 transition">0</button>
+            <button onclick="setSkill(25)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 transition">25</button>
+            <button onclick="setSkill(50)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 transition">50</button>
+            <button onclick="setSkill(75)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 transition">75</button>
+            <button onclick="setSkill(100)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 transition">100</button>
+          </div>
+        </div>
+
+        <!-- Layout View Selector -->
+        <div class="flex items-center gap-2 self-end lg:self-auto">
+          <span class="text-xs text-slate-400 font-medium">View Mode:</span>
+          <div class="bg-slate-950 p-1 rounded-lg border border-slate-800 flex gap-1 text-xs">
+            <button id="viewBtnTable" onclick="setViewMode('table')" class="px-3 py-1.5 rounded-md font-medium transition flex items-center gap-1.5 bg-amber-600 text-white shadow">
+              <i class="fa-solid fa-list-ul"></i>
+              <span>Table View</span>
+            </button>
+            <button id="viewBtnGrid" onclick="setViewMode('grid')" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-border-all"></i>
+              <span>Card Grid</span>
+            </button>
+            <button id="viewBtnPath" onclick="setViewMode('path')" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-route text-amber-400"></i>
+              <span>Skill-Up Path</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Controls Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 text-xs">
+        
+        <!-- Search Input -->
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search recipe or ingredient..." 
+            oninput="renderRecipes()"
+            class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500"
+          >
+        </div>
+
+        <!-- Filter: Category -->
+        <div>
+          <select id="categoryFilter" onchange="renderRecipes()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-500">
+            <option value="ALL">All Categories</option>
+            <option value="Preparation & Basics">Preparation &amp; Basics</option>
+            <option value="Meat Dishes">Meat Dishes</option>
+            <option value="Fish & Seafood">Fish &amp; Seafood</option>
+            <option value="Soups & Veggies">Soups &amp; Veggies</option>
+            <option value="Baking & Breads">Baking &amp; Breads</option>
+          </select>
+        </div>
+
+        <!-- Filter: Ingredient Source -->
+        <div>
+          <select id="sourceFilter" onchange="renderRecipes()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-500">
+            <option value="ALL">All Ingredient Sources</option>
+            <option value="Rat">Rat Meat</option>
+            <option value="Bear">Bear Meat</option>
+            <option value="Snake">Snake / Reptile</option>
+            <option value="Fishing">Fishing</option>
+            <option value="Foraged">Foraged / Herbs</option>
+            <option value="Vendor">Vendor Purchased</option>
+          </select>
+        </div>
+
+        <!-- Filter: Stat Buff -->
+        <div>
+          <select id="statFilter" onchange="renderRecipes()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-amber-500">
+            <option value="ALL">All Stat Buffs</option>
+            <option value="STA">STA (Stamina)</option>
+            <option value="STR">STR (Strength)</option>
+            <option value="DEX">DEX (Dexterity)</option>
+            <option value="AGI">AGI (Agility)</option>
+            <option value="INT">INT (Intelligence)</option>
+            <option value="WIS">WIS (Wisdom)</option>
+            <option value="HP">HP / Regen</option>
+            <option value="MANA">Mana / Regen</option>
+          </select>
+        </div>
+
+        <!-- Toggle: Hide Trivial Recipes -->
+        <div class="flex items-center bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 justify-between">
+          <label for="hideTrivialToggle" class="cursor-pointer text-slate-300 font-medium select-none truncate">
+            Hide Trivial Recipes
+          </label>
+          <input 
+            type="checkbox" 
+            id="hideTrivialToggle" 
+            onchange="renderRecipes()"
+            class="accent-amber-500 h-4 w-4 rounded cursor-pointer"
+          >
+        </div>
+
+      </div>
+
+      <!-- Active Filters Bar & Summary Stats -->
+      <div class="flex flex-wrap items-center justify-between text-xs text-slate-400 pt-1 gap-2 border-t border-slate-800/60">
+        <div id="recipeCount" class="font-medium text-amber-300">
+          Showing 0 of 0 recipes
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-600 inline-block"></span> Trivial</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Ideal Skill-Up</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Near Trivial</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> Very Difficult</span>
+          <button onclick="resetFilters()" class="text-amber-400 hover:text-amber-300 underline ml-2">Reset Filters</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Content Display Container -->
+    <div id="displayContainer" class="min-h-[400px]">
+      <!-- Content populated dynamically by JS -->
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-950 border-t border-slate-900 py-6 text-center text-xs text-slate-500 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p>Monsters &amp; Memories Cooking Tradeskill Redesign Prototype</p>
+      <p class="text-slate-600">Demonstrating optimal crafter UX: primary Trivial Level sorting paired with real-time multi-attribute filtering.</p>
+    </div>
+  </footer>
+
+  <script>
+    /* ==========================================================================
+       SAMPLE MONSTERS & MEMORIES COOKING DATASET
+       Sorted primarily by Trivial Level ascending
+       ========================================================================== */
+    const recipeData = [
+      {
+        id: 'c-01',
+        name: 'Basic Bread Dough',
+        trivial: 15,
+        category: 'Preparation & Basics',
+        source: ['Vendor'],
+        yield: '4x Dough',
+        ingredients: ['1x Clump of Dough', '1x Water Flask', '1x Yeast'],
+        buffs: [{ stat: 'None', val: '-' }],
+        duration: 'N/A',
+        icon: 'fa-bread-slice',
+        description: 'Fundamental baking component used in advanced pastry and flatbread recipes.'
+      },
+      {
+        id: 'c-02',
+        name: 'Roasted Rat Meat',
+        trivial: 20,
+        category: 'Meat Dishes',
+        source: ['Rat'],
+        yield: '1x Meal',
+        ingredients: ['1x Raw Rat Meat', '1x Spices', '1x Wood Chips'],
+        buffs: [{ stat: 'STA', val: '+2' }],
+        duration: '15 min',
+        icon: 'fa-drumstick-bite',
+        description: 'A staple meal for novice adventurers. Tough but hearty.'
+      },
+      {
+        id: 'c-03',
+        name: 'Crocodile Steak',
+        trivial: 30,
+        category: 'Meat Dishes',
+        source: ['Reptile'],
+        yield: '1x Meal',
+        ingredients: ['1x Crocodile Chunk', '1x Salt', '1x Lard'],
+        buffs: [{ stat: 'STR', val: '+3' }, { stat: 'HP', val: '+10' }],
+        duration: '20 min',
+        icon: 'fa-bacon',
+        description: 'Firm, chicken-like meat harvested from marsh crocodiles.'
+      },
+      {
+        id: 'c-04',
+        name: 'Smoked Bear Flank',
+        trivial: 35,
+        category: 'Meat Dishes',
+        source: ['Bear'],
+        yield: '1x Meal',
+        ingredients: ['1x Raw Bear Meat', '1x Hickory Smoked Salt'],
+        buffs: [{ stat: 'STA', val: '+4' }, { stat: 'STR', val: '+2' }],
+        duration: '20 min',
+        icon: 'fa-drumstick-bite',
+        description: 'Rich, fatty bear meat smoked over seasoned hardwoods.'
+      },
+      {
+        id: 'c-05',
+        name: 'Spiced Snake Cutlet',
+        trivial: 45,
+        category: 'Meat Dishes',
+        source: ['Snake'],
+        yield: '1x Meal',
+        ingredients: ['1x Snake Meat', '2x Exotic Spices', '1x Vegetable Oil'],
+        buffs: [{ stat: 'AGI', val: '+4' }, { stat: 'DEX', val: '+2' }],
+        duration: '25 min',
+        icon: 'fa-bowl-food',
+        description: 'Thinly sliced serpent meat seasoned with sharp desert spices.'
+      },
+      {
+        id: 'c-06',
+        name: 'Garlic Rat Haunch',
+        trivial: 50,
+        category: 'Meat Dishes',
+        source: ['Rat', 'Foraged'],
+        yield: '1x Meal',
+        ingredients: ['1x Giant Rat Leg', '2x Wild Garlic', '1x Butter'],
+        buffs: [{ stat: 'STA', val: '+5' }, { stat: 'HP', val: '+20' }],
+        duration: '30 min',
+        icon: 'fa-drumstick-bite',
+        description: 'Giant rat meat heavily seasoned with wild garlic bulbs to mask the wild gaminess.'
+      },
+      {
+        id: 'c-07',
+        name: 'Cheesy Mushroom Soup',
+        trivial: 60,
+        category: 'Soups & Veggies',
+        source: ['Foraged', 'Vendor'],
+        yield: '2x Soup Bowls',
+        ingredients: ['2x Foraged Mushrooms', '1x Aged Cheese', '1x Milk', '1x Water Flask'],
+        buffs: [{ stat: 'INT', val: '+4' }, { stat: 'WIS', val: '+4' }],
+        duration: '30 min',
+        icon: 'fa-bowl-rice',
+        description: 'Comforting soup favored by scholars and spellcasters.'
+      },
+      {
+        id: 'c-08',
+        name: 'Slow-Roasted Bear Shoulder',
+        trivial: 65,
+        category: 'Meat Dishes',
+        source: ['Bear', 'Foraged'],
+        yield: '2x Meals',
+        ingredients: ['1x Great Bear Shoulder', '1x Wild Herbs', '1x Cooking Wine'],
+        buffs: [{ stat: 'STR', val: '+6' }, { stat: 'STA', val: '+6' }],
+        duration: '35 min',
+        icon: 'fa-drumstick-bite',
+        description: 'Braised for hours until tender enough to pull apart with a wooden fork.'
+      },
+      {
+        id: 'c-09',
+        name: 'Spicy Scarab Stew',
+        trivial: 75,
+        category: 'Soups & Veggies',
+        source: ['Insect', 'Foraged'],
+        yield: '2x Bowls',
+        ingredients: ['2x Scarab Chitin Muscle', '1x Fire Pepper', '1x Water Flask'],
+        buffs: [{ stat: 'AGI', val: '+6' }, { stat: 'MANA', val: '+15' }],
+        duration: '35 min',
+        icon: 'fa-fire-burner',
+        description: 'Pungent and fiery stew that provides a surge of adrenaline.'
+      },
+      {
+        id: 'c-10',
+        name: 'Basilisk Skewers',
+        trivial: 75,
+        category: 'Meat Dishes',
+        source: ['Reptile', 'Foraged'],
+        yield: '1x Meal',
+        ingredients: ['1x Basilisk Tail', '1x Wooden Skewer', '1x Dried Herbs'],
+        buffs: [{ stat: 'DEX', val: '+6' }, { stat: 'STA', val: '+4' }],
+        duration: '35 min',
+        icon: 'fa-utensils',
+        description: 'Carefully prepared reptilian skewers. Requires thorough cooking to neutralize toxins.'
+      },
+      {
+        id: 'c-11',
+        name: 'Wolf Braise in Red Wine',
+        trivial: 80,
+        category: 'Meat Dishes',
+        source: ['Wolf', 'Vendor'],
+        yield: '1x Meal',
+        ingredients: ['1x Lean Wolf Meat', '1x Vintage Red Wine', '1x Onion'],
+        buffs: [{ stat: 'STR', val: '+7' }, { stat: 'AGI', val: '+5' }],
+        duration: '40 min',
+        icon: 'fa-drumstick-bite',
+        description: 'Tenderized wolf steak braised in rich red wine sauce.'
+      },
+      {
+        id: 'c-12',
+        name: 'Spice-Crusted Flatbread',
+        trivial: 85,
+        category: 'Baking & Breads',
+        source: ['Snake', 'Vendor'],
+        yield: '3x Flatbreads',
+        ingredients: ['1x Dough', '1x Snake Oil', '1x Desert Spice Blend'],
+        buffs: [{ stat: 'WIS', val: '+6' }, { stat: 'INT', val: '+6' }],
+        duration: '40 min',
+        icon: 'fa-bread-slice',
+        description: 'Crispy flatbread topped with aromatic toasted spices and oils.'
+      },
+      {
+        id: 'c-13',
+        name: 'Angelfish Bisque',
+        trivial: 100,
+        category: 'Fish & Seafood',
+        source: ['Fishing', 'Vendor'],
+        yield: '2x Bisque Bowls',
+        ingredients: ['1x Fresh Angelfish', '1x Heavy Cream', '1x Butter', '1x Fish Stock'],
+        buffs: [{ stat: 'MANA', val: '+30' }, { stat: 'INT', val: '+8' }],
+        duration: '45 min',
+        icon: 'fa-fish',
+        description: 'Silky smooth seafood bisque rich in mana-restoring properties.'
+      },
+      {
+        id: 'c-14',
+        name: 'Herb Mackerel Tandoori',
+        trivial: 100,
+        category: 'Fish & Seafood',
+        source: ['Fishing', 'Foraged'],
+        yield: '1x Meal',
+        ingredients: ['1x Saltwater Mackerel', '1x Tandoori Paste', '1x Lemon'],
+        buffs: [{ stat: 'DEX', val: '+8' }, { stat: 'AGI', val: '+8' }],
+        duration: '45 min',
+        icon: 'fa-fish',
+        description: 'Char-broiled whole fish marinated in vibrant red spice blend.'
+      },
+      {
+        id: 'c-15',
+        name: 'Bear Au Gratin',
+        trivial: 120,
+        category: 'Meat Dishes',
+        source: ['Bear', 'Vendor'],
+        yield: '2x Meals',
+        ingredients: ['1x Prime Bear Cut', '2x Potato', '1x Heavy Cream', '1x Cheese'],
+        buffs: [{ stat: 'STA', val: '+10' }, { stat: 'STR', val: '+10' }, { stat: 'HP', val: '+40' }],
+        duration: '60 min',
+        icon: 'fa-plate-wheat',
+        description: 'A decadent feast fit for high-tier dungeon expeditions.'
+      }
+    ];
+
+    // App State
+    let currentSkill = 35;
+    let currentViewMode = 'table'; // 'table' | 'grid' | 'path'
+
+    // Initialize application
+    window.onload = function() {
+      renderRecipes();
+    };
+
+    function setSkill(val) {
+      document.getElementById('userSkillInput').value = val;
+      updateSkillFilter();
+    }
+
+    function updateSkillFilter() {
+      const val = parseInt(document.getElementById('userSkillInput').value) || 0;
+      currentSkill = Math.max(0, Math.min(300, val));
+      renderRecipes();
+    }
+
+    function togglePitch() {
+      const panel = document.getElementById('pitchPanel');
+      const chevron = document.getElementById('pitchChevron');
+      if (panel.classList.contains('hidden')) {
+        panel.classList.remove('hidden');
+        chevron.classList.remove('rotate-180');
+      } else {
+        panel.classList.add('hidden');
+        chevron.classList.add('rotate-180');
+      }
+    }
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      
+      // Update toggle buttons styling
+      const btns = {
+        table: document.getElementById('viewBtnTable'),
+        grid: document.getElementById('viewBtnGrid'),
+        path: document.getElementById('viewBtnPath')
+      };
+
+      Object.keys(btns).forEach(key => {
+        if (key === mode) {
+          btns[key].className = "px-3 py-1.5 rounded-md font-medium transition flex items-center gap-1.5 bg-amber-600 text-white shadow";
+        } else {
+          btns[key].className = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5";
+        }
+      });
+
+      renderRecipes();
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('categoryFilter').value = 'ALL';
+      document.getElementById('sourceFilter').value = 'ALL';
+      document.getElementById('statFilter').value = 'ALL';
+      document.getElementById('hideTrivialToggle').checked = false;
+      renderRecipes();
+    }
+
+    /* Helper: Calculate recipe status based on user skill level */
+    function getSkillStatus(trivialLevel, userSkill) {
+      const diff = trivialLevel - userSkill;
+
+      if (diff <= 0) {
+        return {
+          code: 'TRIVIAL',
+          label: 'Trivial (No Skill-Up)',
+          badgeClass: 'bg-slate-800 text-slate-400 border-slate-700',
+          rowClass: 'opacity-60 bg-slate-950/40',
+          difficultyColor: 'text-slate-500',
+          recommendation: 'Too Low'
+        };
+      } else if (diff <= 15) {
+        return {
+          code: 'OPTIMAL',
+          label: 'Optimal Skill-Up',
+          badgeClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-700/60 shadow-emerald-900/20 shadow-sm',
+          rowClass: 'bg-emerald-950/10 border-l-4 border-l-emerald-500',
+          difficultyColor: 'text-emerald-400',
+          recommendation: '⭐ Best Match'
+        };
+      } else if (diff <= 30) {
+        return {
+          code: 'NEAR',
+          label: 'Feasible (Near Trivial)',
+          badgeClass: 'bg-amber-950/80 text-amber-300 border-amber-700/60',
+          rowClass: 'bg-amber-950/5 border-l-4 border-l-amber-500',
+          difficultyColor: 'text-amber-400',
+          recommendation: 'Good'
+        };
+      } else {
+        return {
+          code: 'HARD',
+          label: 'High Failure Rate',
+          badgeClass: 'bg-red-950/80 text-red-300 border-red-800/60',
+          rowClass: 'bg-red-950/5 border-l-4 border-l-red-800',
+          difficultyColor: 'text-red-400',
+          recommendation: 'Hard'
+        };
+      }
+    }
+
+    function getFilteredRecipes() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const cat = document.getElementById('categoryFilter').value;
+      const src = document.getElementById('sourceFilter').value;
+      const stat = document.getElementById('statFilter').value;
+      const hideTrivial = document.getElementById('hideTrivialToggle').checked;
+
+      return recipeData.filter(r => {
+        // Trivial toggle
+        if (hideTrivial && r.trivial <= currentSkill) {
+          return false;
+        }
+
+        // Category Filter
+        if (cat !== 'ALL' && r.category !== cat) {
+          return false;
+        }
+
+        // Source Filter
+        if (src !== 'ALL' && !r.source.includes(src)) {
+          return false;
+        }
+
+        // Stat Filter
+        if (stat !== 'ALL') {
+          const hasStat = r.buffs.some(b => b.stat.toUpperCase() === stat.toUpperCase());
+          if (!hasStat) return false;
+        }
+
+        // Search text matching (name or ingredients)
+        if (search) {
+          const nameMatch = r.name.toLowerCase().includes(search);
+          const ingMatch = r.ingredients.some(i => i.toLowerCase().includes(search));
+          const catMatch = r.category.toLowerCase().includes(search);
+          if (!nameMatch && !ingMatch && !catMatch) return false;
+        }
+
+        return true;
+      });
+    }
+
+    function renderRecipes() {
+      const filtered = getFilteredRecipes();
+      const container = document.getElementById('displayContainer');
+      const countEl = document.getElementById('recipeCount');
+
+      countEl.innerText = `Showing ${filtered.length} of ${recipeData.length} recipes`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-12 text-center text-slate-400">
+            <i class="fa-solid fa-utensils text-4xl text-slate-600 mb-3 block"></i>
+            <h3 class="text-lg font-bold text-slate-300">No matching recipes found</h3>
+            <p class="text-sm text-slate-500 mt-1">Try relaxing your filters or resetting your search term.</p>
+            <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-medium text-xs rounded-lg transition">
+              Reset All Filters
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      if (currentViewMode === 'table') {
+        renderTableView(filtered, container);
+      } else if (currentViewMode === 'grid') {
+        renderGridView(filtered, container);
+      } else if (currentViewMode === 'path') {
+        renderPathView(filtered, container);
+      }
+    }
+
+    function renderTableView(recipes, container) {
+      let html = `
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-950 border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider font-semibold">
+                  <th class="py-3.5 px-4 w-20 text-center">Trivial</th>
+                  <th class="py-3.5 px-4">Recipe Name</th>
+                  <th class="py-3.5 px-4">Category</th>
+                  <th class="py-3.5 px-4">Ingredients</th>
+                  <th class="py-3.5 px-4">Stat Buffs</th>
+                  <th class="py-3.5 px-4 text-center">Skill-Up Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 text-sm">
+      `;
+
+      recipes.forEach(r => {
+        const status = getSkillStatus(r.trivial, currentSkill);
+
+        const buffBadges = r.buffs.map(b => {
+          if (b.stat === 'None') return `<span class="text-slate-500 text-xs">None</span>`;
+          return `<span class="inline-block bg-slate-950 border border-slate-700 text-amber-300 text-xs px-2 py-0.5 rounded font-mono font-medium">${b.stat} ${b.val}</span>`;
+        }).join(' ');
+
+        const ingList = r.ingredients.map(i => `<span class="text-slate-300">${i}</span>`).join('<span class="text-slate-600 mx-1">•</span>');
+
+        html += `
+          <tr class="hover:bg-slate-800/40 transition-colors ${status.rowClass}">
+            <!-- Trivial Level -->
+            <td class="py-3 px-4 text-center">
+              <span class="font-mono font-bold text-base ${status.difficultyColor}">${r.trivial}</span>
+            </td>
+
+            <!-- Recipe Name & Icon -->
+            <td class="py-3 px-4">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0">
+                  <i class="fa-solid ${r.icon} text-amber-400"></i>
+                </div>
+                <div>
+                  <div class="font-semibold text-slate-100 flex items-center gap-2">
+                    ${r.name}
+                  </div>
+                  <div class="text-xs text-slate-500">Yields: ${r.yield}</div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Category & Source Tags -->
+            <td class="py-3 px-4">
+              <span class="text-xs bg-slate-950 text-slate-300 px-2 py-1 rounded border border-slate-800 inline-block mb-1">
+                ${r.category}
+              </span>
+              <div class="flex flex-wrap gap-1">
+                ${r.source.map(s => `<span class="text-[10px] text-amber-300/80 bg-amber-950/40 px-1.5 py-0.2 rounded border border-amber-900/30">${s}</span>`).join('')}
+              </div>
+            </td>
+
+            <!-- Ingredients -->
+            <td class="py-3 px-4 text-xs max-w-xs">
+              <div class="leading-relaxed">
+                ${ingList}
+              </div>
+            </td>
+
+            <!-- Buffs -->
+            <td class="py-3 px-4">
+              <div class="flex flex-wrap gap-1">
+                ${buffBadges}
+              </div>
+            </td>
+
+            <!-- Skill-Up Badge -->
+            <td class="py-3 px-4 text-center">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${status.badgeClass}">
+                ${status.recommendation}
+              </span>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    function renderGridView(recipes, container) {
+      let html = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">`;
+
+      recipes.forEach(r => {
+        const status = getSkillStatus(r.trivial, currentSkill);
+
+        const buffBadges = r.buffs.map(b => {
+          if (b.stat === 'None') return `<span class="text-slate-500 text-xs">None</span>`;
+          return `<span class="bg-slate-950 border border-slate-700 text-amber-300 text-xs px-2 py-0.5 rounded font-mono font-medium">${b.stat} ${b.val}</span>`;
+        }).join(' ');
+
+        html += `
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex flex-col justify-between hover:border-slate-700 transition relative overflow-hidden ${status.rowClass}">
+            <div>
+              <!-- Header Row -->
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div class="flex items-center space-x-2.5">
+                  <div class="w-9 h-9 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center shrink-0">
+                    <i class="fa-solid ${r.icon} text-amber-400"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-100 text-base leading-snug">${r.name}</h4>
+                    <span class="text-xs text-slate-400">${r.category}</span>
+                  </div>
+                </div>
+                <div class="text-right shrink-0">
+                  <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Trivial</div>
+                  <div class="font-mono font-bold text-lg ${status.difficultyColor}">${r.trivial}</div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <p class="text-xs text-slate-400 mb-3 italic">
+                "${r.description}"
+              </p>
+
+              <!-- Ingredients Box -->
+              <div class="bg-slate-950/70 border border-slate-800/80 rounded-lg p-2.5 mb-3 text-xs space-y-1">
+                <div class="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex justify-between">
+                  <span>Ingredients</span>
+                  <span class="text-slate-500 normal-case font-normal">${r.yield}</span>
+                </div>
+                <ul class="list-disc list-inside text-slate-300 space-y-0.5">
+                  ${r.ingredients.map(i => `<li>${i}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+
+            <!-- Card Footer -->
+            <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between text-xs">
+              <div class="flex items-center gap-1">
+                ${buffBadges}
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-medium border ${status.badgeClass}">
+                ${status.recommendation}
+              </span>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      container.innerHTML = html;
+    }
+
+    function renderPathView(recipes, container) {
+      // Group recipes into trivial bands (e.g., 0-25, 26-50, 51-75, 76-100, 101+)
+      const bands = [
+        { name: 'Novice Crafter (Skill 0 - 25)', min: 0, max: 25 },
+        { name: 'Apprentice Cook (Skill 26 - 50)', min: 26, max: 50 },
+        { name: 'Journeyman Chef (Skill 51 - 75)', min: 51, max: 75 },
+        { name: 'Expert Culinary Artist (Skill 76 - 100)', min: 76, max: 100 },
+        { name: 'Master Gastronomist (Skill 101+)', min: 101, max: 999 }
+      ];
+
+      let html = `<div class="space-y-6">`;
+
+      bands.forEach(band => {
+        const bandRecipes = recipes.filter(r => r.trivial >= band.min && r.trivial <= band.max);
+
+        if (bandRecipes.length === 0) return;
+
+        const isCurrentBand = currentSkill >= band.min && (currentSkill <= band.max || band.max === 999);
+
+        html += `
+          <div class="bg-slate-900 border ${isCurrentBand ? 'border-amber-600/80 shadow-amber-950/30' : 'border-slate-800'} rounded-xl p-5 shadow-lg relative">
+            ${isCurrentBand ? '<div class="absolute -top-3 right-4 bg-amber-600 text-slate-950 font-bold text-[10px] uppercase tracking-widest px-3 py-0.5 rounded-full shadow">Your Current Tier Band</div>' : ''}
+            
+            <div class="flex items-center space-x-3 mb-4 border-b border-slate-800 pb-2">
+              <div class="w-8 h-8 rounded-full bg-amber-950 border border-amber-600/40 text-amber-400 font-bold flex items-center justify-center font-mono text-sm">
+                ${band.min}
+              </div>
+              <h3 class="font-fantasy text-lg font-bold text-amber-300">${band.name}</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              ${bandRecipes.map(r => {
+                const status = getSkillStatus(r.trivial, currentSkill);
+                return `
+                  <div class="bg-slate-950 border border-slate-800 rounded-lg p-3 flex items-start justify-between gap-3 hover:border-slate-700 transition">
+                    <div class="space-y-1">
+                      <div class="flex items-center space-x-2">
+                        <i class="fa-solid ${r.icon} text-amber-400 text-sm"></i>
+                        <span class="font-bold text-slate-200 text-sm">${r.name}</span>
+                      </div>
+                      <div class="text-xs text-slate-400">
+                        <span class="text-amber-300 font-medium">${r.category}</span> • ${r.ingredients.join(', ')}
+                      </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                      <div class="font-mono font-bold text-sm ${status.difficultyColor}">Trivial ${r.trivial}</div>
+                      <span class="text-[10px] font-semibold px-2 py-0.5 rounded border inline-block mt-1 ${status.badgeClass}">
+                        ${status.code}
+                      </span>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
